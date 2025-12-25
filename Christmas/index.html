@@ -1,0 +1,150 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Christmas Surprise 🎄</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    margin: 0;
+    font-family: Segoe UI, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    height: 100vh;
+    background: url("https://png.pngtree.com/background/20250103/original/pngtree-christmas-greetings-background-with-blank-room-picture-image_15991075.jpg") center/cover no-repeat;
+    overflow: hidden;
+}
+
+/* Glow effect */
+.glow {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,215,0,0.15), transparent);
+    pointer-events: none;
+    animation: pulse 3s infinite alternate;
+    z-index: 0;
+}
+
+@keyframes pulse {
+    from { opacity: 0.3; }
+    to { opacity: 0.8; }
+}
+
+/* Snowflakes */
+.snowflake {
+    position: absolute;
+    top: 10px;
+    color: white;
+    opacity: 1.5;
+    animation: fall linear infinite;
+    z-index: 3;
+}
+
+@keyframes fall {
+    to { transform: translateY(140vh); }
+}
+
+/* Santa */
+.santa {
+    width: 180px;
+    position: absolute;
+    bottom: 0;
+    offset-path: path("M -200 500 C 300 200, 700 200, 1100 500");
+    offset-rotate: 0deg;
+    animation: walk 12s linear infinite;
+    filter: drop-shadow(0 0 20px rgba(255,0,0,0.7));
+    z-index: 5;
+}
+
+@keyframes walk {
+    from { offset-distance: 0%; }
+    to { offset-distance: 100%; }
+}
+
+/* Gift drop animation */
+.gift {
+    position: absolute;
+    width: 40px;
+    z-index: 4;
+    opacity: 0.9;
+    animation: drop 4s linear forwards;
+}
+
+@keyframes drop {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(600px) rotate(360deg); opacity: 0; }
+}
+
+/* Box for surprise content */
+.box {
+    background: rgba(29, 125, 138, 0.55);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    z-index: 10;
+    position: relative;
+}
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    background: #c62828;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<!-- Santa Video -->
+<video class="santa" autoplay loop muted playsinline id="santa">
+    <source src=" https://cdn.pixabay.com/video/2023/12/02/191688-891301397_tiny.mp4" type="video/webm">
+</video>
+
+<!-- Footstep sound -->
+<audio id="footstep" src="https://www.soundjay.com/human/footstep-2.mp3" loop autoplay></audio>
+
+<script>
+    // Snow generator
+    for (let i = 0; i < 100; i++) {
+        let snow = document.createElement("div");
+        snow.className = "snowflake";
+        snow.innerHTML = "❄";
+        snow.style.left = Math.random() * 100 + "vw";
+        snow.style.animationDuration = (Math.random() * 8 + 5) + "s";
+        snow.style.fontSize = (Math.random() * 15 + 10) + "px";
+        document.body.appendChild(snow);
+    }
+
+    // Gift drop logic
+    const santa = document.getElementById("santa");
+    function dropGift() {
+        let gift = document.createElement("img");
+        gift.src = "https://cdn.pixabay.com/video/2023/12/02/191688-891301397_tiny.mp4"; // gift icon
+        gift.className = "gift";
+        let santaRect = santa.getBoundingClientRect();
+        gift.style.left = santaRect.left + santaRect.width/2 - 20 + "px";
+        gift.style.top = santaRect.top + "px";
+        document.body.appendChild(gift);
+
+        // remove after animation
+        setTimeout(() => gift.remove(), 4000);
+    }
+
+    // Drop gifts every 2s
+    setInterval(dropGift, 2000);
+</script>
+
+<!-- Surprise Box -->
+<div class="box">
+    <h1>🎄 A Christmas Surprise 🎁</h1>
+    <p>Something special is waiting for you ❤️</p>
+    <button onclick="location.href='card.html'">Open Gift</button>
+</div>
+
+</body>
+</html>

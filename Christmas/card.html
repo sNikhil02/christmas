@@ -1,0 +1,236 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Magical Christmas Gift Card</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    margin: 0;
+    font-family: Segoe UI, Arial, sans-serif;
+    background: url("https://thumbs.dreamstime.com/b/frozen-christmas-tree-blurred-snow-red-heart-love-frozen-christmas-tree-blurred-snow-red-heart-love-129736947.jpg?w=768") center/cover no-repeat;
+    min-height: 90vh;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Glow effect */
+.glow {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(221, 196, 54, 0.15), transparent);
+    pointer-events: none;
+    animation: pulse 3s infinite alternate;
+    z-index: 0;
+}
+@keyframes pulse { from { opacity: 0.3; } to { opacity: 0.8; } }
+
+/* Snowflakes */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    opacity: 1.2;
+    animation: fall linear infinite;
+    z-index: 1;
+}
+@keyframes fall { to { transform: translateY(110vh); } }
+
+/* Santa walking */
+.santa {
+    width: 150px;
+    position: absolute;
+    bottom: 50px;
+    offset-path: path("M -200 500 C 300 200, 700 200, 1100 500");
+    offset-rotate: 0deg;
+    animation: walk 12s linear infinite;
+    filter: drop-shadow(0 0 20px rgba(226, 187, 187, 0.7));
+    z-index: 5;
+}
+@keyframes walk { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+
+/* Card styling */
+.card {
+    width: 90%;
+    max-width: 600px;
+    background: linear-gradient(135deg,#e6d5d5,#e5afaa);
+    color: #ea7360;
+    border-radius: 25px;
+    display: flex;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(231, 219, 219, 0.3);
+    position: relative;
+    z-index: 10;
+}
+.left { flex: 1; font-size: 32px; font-weight: bold; }
+.right { flex: 1; font-size: 16px; }
+.icon { position: absolute; font-size: 28px; opacity: 0.8; }
+.icon.teddy { bottom: 15px; right: 20px; }
+.icon.tree { top: 15px; right: 20px; }
+
+button {
+    margin-top: 20px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 20px;
+    background: #fff;
+    color: #8b0000;
+    cursor: pointer;
+}
+input, textarea {
+    width: 90%;
+    padding: 6px 8px;
+    border-radius: 10px;
+    border:#c62828;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+textarea { resize: vertical; }
+
+/* Popup Message */
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: rgba(255,255,255,0.95);
+    color: #8b0000;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 20;
+    transition: transform 0.5s ease;
+}
+#popup.show { transform: translate(-50%, -50%) scale(1); }
+#popup button { margin-top:15px; background:#8b0000; color:white; }
+
+/* Gift flying animation */
+@keyframes flyGift {
+    0% { transform: translate(0,0) scale(1); opacity:1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(1.2); opacity:1; }
+}
+.gift {
+    position: absolute;
+    width: 60px;
+    z-index: 15;
+}
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    background: #c62828;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+     
+
+     
+
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<!-- Santa Video -->
+<video class="santa" autoplay loop muted playsinline id="santa">
+    <source src="https://cdn.pixabay.com/video/2022/12/07/142395-778877185_large.webm" type="video/webm">
+</video>
+
+<script>
+    // Snow generator
+    for (let i = 0; i < 60; i++) {
+        let snow = document.createElement("div");
+        snow.className = "snowflake";
+        snow.innerHTML = "❄";
+        snow.style.left = Math.random() * 100 + "vw";
+        snow.style.animationDuration = (Math.random() * 5 + 5) + "s";
+        snow.style.fontSize = (Math.random() * 12 + 10) + "px";
+        document.body.appendChild(snow);
+    }
+</script>
+
+<div class="card">
+    <div class="icon tree">🎄</div>
+    <div class="icon teddy">🧸</div>
+
+    <div class="left">
+        Christmas<br>Gift Card
+    </div>
+
+    <div class="right">
+        <form id="giftForm" onsubmit="sendGift(event)">
+            <label><b>To:</b></label><br>
+            <input type="text" id="to" placeholder="Recipient name" required><br>
+
+            <label><b>From:</b></label><br>
+            <input type="text" id="from" placeholder="Your name" required><br>
+
+            <label><b>Message:</b></label><br>
+            <textarea id="message" rows="4" placeholder="Write your message" required></textarea><br>
+
+            <button type="submit">Send Gift 🎁</button>
+            <button onclick="location.href='message.html'">GO</button>
+        </form>
+    </div>
+</div>
+
+<!-- Popup Message -->
+<div id="popup">
+    <h2>🎁 Gift Received!</h2>
+    <p id="popupMessage"></p>
+    <button onclick="closePopup()">Close</button>
+</div>
+
+<script>
+function sendGift(e) {
+    e.preventDefault();
+
+    const to = document.getElementById('to').value;
+    const from = document.getElementById('from').value;
+    const message = document.getElementById('message').value;
+
+    // Get Santa position
+    const santa = document.getElementById('santa');
+    const rect = santa.getBoundingClientRect();
+
+    // Create gift element
+    let gift = document.createElement('img');
+    gift.src = "https://cdn.pixabay.com/photo/2017/12/22/08/48/christmas-3034247_960_720.png";
+    gift.className = 'gift';
+    gift.style.left = rect.left + rect.width/2 - 30 + 'px';
+    gift.style.top = rect.top + 'px';
+    document.body.appendChild(gift);
+
+    // Calculate translation to center
+    const centerX = window.innerWidth/2 - 30 - (rect.left + rect.width/2 - 30);
+    const centerY = window.innerHeight/2 - 30 - rect.top;
+    gift.style.setProperty('--dx', centerX + 'px');
+    gift.style.setProperty('--dy', centerY + 'px');
+
+    // Animate gift flying
+    gift.style.animation = 'flyGift 1s forwards ease-in-out';
+
+    // After animation, remove gift and show popup
+    setTimeout(() => {
+        gift.remove();
+        const popup = document.getElementById('popup');
+        document.getElementById('popupMessage').innerHTML = 
+            `<b>To:</b> ${to}<br>
+             <b>From:</b> ${from}<br>
+             <b>Message:</b> ${message}`;
+        popup.classList.add('show');
+    }, 2000);
+}
+
+function closePopup() {
+    document.getElementById('popup').classList.remove('show');
+}
+</script>
+
+</body>
+</html>
+

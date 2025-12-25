@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Merry Christmas ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+ margin:0;
+ font-family:Segoe UI;
+ background:radial-gradient(circle,#ffb6c1,#c62828);
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ color:white;
+ overflow:hidden;
+}
+.box{
+ background:rgba(255,255,255,0.2);
+ padding:40px;
+ border-radius:25px;
+ text-align:center;
+}
+.snow{
+ position:fixed;
+ top:-10px;
+ animation:fall linear infinite;
+}
+@keyframes fall{to{transform:translateY(110vh);}}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h1>🎄 Merry Christmas ❤️</h1>
+<p>
+You are my favorite gift<br>
+today, tomorrow, always 🧸✨
+</p>
+<p>— With all my love</p>
+</div>
+
+<script>
+for(let i=0;i<40;i++){
+ let s=document.createElement("div");
+ s.innerHTML="❄";
+ s.className="snow";
+ s.style.left=Math.random()*100+"vw";
+ s.style.fontSize=10+Math.random()*20+"px";
+ s.style.animationDuration=3+Math.random()*5+"s";
+ document.body.appendChild(s);
+}
+</script>
+
+</body>
+</html>

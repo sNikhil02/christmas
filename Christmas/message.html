@@ -1,0 +1,186 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Christmas Wish</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background:url(" https://images.unsplash.com/photo-1511268011861-691ed210aae8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center/cover;
+    position:relative;
+}
+
+/* ❄ Snow */
+.snow{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+}
+.snow span{
+    position:absolute;
+    top:-10px;
+    background:white;
+    border-radius:50%;
+    opacity:.8;
+    animation:snowfall linear infinite;
+}
+@keyframes snowfall{
+    to{transform:translateY(100vh);opacity:0;}
+}
+
+/* 🎅 Santa Sleigh */
+.santa{
+    position:absolute;
+    top:30px;
+    left:-100px;
+    width:170px;
+    z-index:3;
+    animation:santaMove 18s linear infinite;
+}
+@keyframes santaMove{
+    to{left:110%;}
+}
+
+/* 🧸 Teddies */
+.teddy{
+     position:absolute;
+    top:30px;
+    left:-300px;
+    width:220px;
+    z-index:3;
+    ;
+}
+
+ 
+
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+}
+.left-santa {
+    position: fixed;
+    left: 87px;
+    bottom: 70px;
+    width: 350px;
+    z-index: 4;
+    animation: santaFloat 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes santaFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* 📱 Mobile Adjust */
+@media (max-width: 768px) {
+    .left-santa {
+        width: 100px;
+        bottom: 20px;
+        left: 5px;
+    }
+}
+
+/* 💌 Card */
+.card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(10px);
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    color:#fff;
+    z-index:5;
+    width:380px;
+}
+.card h1{margin-bottom:15px;}
+.card p{line-height:1.6;font-size:15px;}
+.card button{
+    margin-top:18px;
+    padding:12px 30px;
+    border:none;
+    border-radius:25px;
+    background:#c62828;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+.card button:hover{background:#b71c1c;}
+
+/* 📱 Mobile Polish */
+@media(max-width:768px){
+    .card{width:90%;padding:22px;}
+    .card h1{font-size:22px;}
+    .card p{font-size:14px;}
+    .card button{width:100%;}
+    .santa{width:170px;top:15px;}
+    .teddy{width:75px;}
+    .teddy.top{width:60px;top:90px;right:10px;}
+}
+@media(max-width:480px){
+    .card h1{font-size:20px;}
+    .card p{font-size:13px;}
+    .santa{width:145px;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎅 Santa Sleigh -->
+<img src="https://t3.ftcdn.net/jpg/18/43/37/50/240_F_1843375045_BSfGmVwfdlnCn3VoSHWuDodm27nzJ4ZV.jpg" class="santa">
+
+<!-- 🧸 Teddies -->
+<img src=" https://t3.ftcdn.net/jpg/18/43/37/50/240_F_1843375045_BSfGmVwfdlnCn3VoSHWuDodm27nzJ4ZV.jpg" class="teddy left">
+<img src=" https://t3.ftcdn.net/jpg/18/43/37/50/240_F_1843375045_BSfGmVwfdlnCn3VoSHWuDodm27nzJ4ZV.jpg" class="teddy right">
+<img src="https://t3.ftcdn.net/jpg/18/43/37/50/240_F_1843375045_BSfGmVwfdlnCn3VoSHWuDodm27nzJ4ZV.jpg" class="teddy top">
+<img src="80f7c667-18b6-4c11-9897-cf8fe934e7e1.png" class="left-santa">
+
+<!-- ❄ Snow -->
+<div class="snow" id="snow"></div>
+
+<!-- 💌 Message Card -->
+<div class="card">
+    <h1>❤️ My Christmas Wish ❤️</h1>
+    <p>
+        This Christmas, I don’t want gifts,<br>
+        I just want you beside me.<br>
+        You are my warmth in winter,<br>
+        my smile in every season 🎄✨
+    </p>
+    <button onclick="location.href='suprise.html'">GO</button>
+</div>
+
+<script>
+const snow=document.getElementById("snow");
+const isMobile=innerWidth<768;
+const flakes=isMobile?40:80;
+
+for(let i=0;i<flakes;i++){
+    const s=document.createElement("span");
+    const size=Math.random()*6+4;
+    s.style.width=size+"px";
+    s.style.height=size+"px";
+    s.style.left=Math.random()*innerWidth+"px";
+    s.style.animationDuration=Math.random()*5+5+"s";
+    s.style.animationDelay=Math.random()*5+"s";
+    snow.appendChild(s);
+}
+</script>
+
+</body>
+</html>
